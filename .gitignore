@@ -24,3 +24,12 @@ proguard/
 
 # Log Files
 *.log
+
+.idea/
+short-torries/.gradle
+short-torries/local.properties
+short-torries/.idea/workspace.xml
+short-torries/.idea/libraries
+short-torries/.DS_Store
+short-torries/build
+short-torries/.idea/
