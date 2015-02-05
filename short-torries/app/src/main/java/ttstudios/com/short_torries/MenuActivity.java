@@ -62,55 +62,7 @@ public class MenuActivity extends Activity {
     }
 
     private void logout() {
-        Logout logout = new Logout(this);
-        logout.execute();
+        LogoutHandler logout = new LogoutHandler();
+        logout.executeLogout(this);
     }
-
-    public void logoutResponse(Long logoutResponse) {
-        int responseCode = Integer.valueOf(logoutResponse.intValue());
-        switch (responseCode) {
-            case -2:
-                Toast.makeText(getApplicationContext(), "No connection", Toast.LENGTH_LONG).show();
-                break;
-            case 0:
-                Intent menuActivity = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(menuActivity);
-                finish();
-                break;
-            case 401:
-                Toast.makeText(getApplicationContext(), "Unauthorized", Toast.LENGTH_LONG).show();
-                break;
-            default:
-                Toast.makeText(getApplicationContext(), "An error occurred: Could not retrieve data", Toast.LENGTH_LONG).show();
-                break;
-        }
-    }
-
-    private class Logout extends AsyncTask<Void, Void, Void> {
-        private ProgressDialog dialog;
-
-        public Logout(MenuActivity activity) {
-            dialog = new ProgressDialog(activity);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            dialog.setMessage("Logging out, please wait");
-            dialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            dialog.dismiss();
-            logoutResponse(logoutResponse);
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            logoutResponse = Authentication.logout(getApplicationContext());
-            return null;
-        }
-
-    }
-
 }
