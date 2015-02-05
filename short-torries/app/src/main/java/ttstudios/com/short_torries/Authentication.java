@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Collection;
 
 /**
@@ -83,56 +84,109 @@ public class Authentication {
             //No connection
             statusCode = -2;
         }
-        System.out.println(statusCode);
         return statusCode;
     }
+
+    public static long logout(Context context) {
+        if (isConnected(context)) {
+            try {
+                SharedPreferences pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+                String token = pref.getString(TOKEN, null);
+                if(token == null) {
+                    return 0;
+                }
+                String url = "http://192.168.1.101:5200/v1/logout";
+
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+                con.setRequestMethod("GET");
+                con.setRequestProperty("User-Agent", USER_AGENT);
+                con.setRequestProperty("Authorization", "Bearer " + token);
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
+
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                loginResponse = response.toString();
+
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObj = (JSONObject) parser.parse(loginResponse);
+                if (jsonObj.containsKey("statusCode")) {
+                    statusCode = (long) jsonObj.get("statusCode");
+                    if (statusCode == 0) {
+                        Editor editor = pref.edit();
+                        editor.remove(TOKEN);
+                    }
+                } else {
+                    //No or invalid response received
+                    statusCode = -1;
+                }
+            } catch (Exception e) {
+                statusCode = -1;
+                System.out.println("Error: " + e);
+            }
+        }
+        else {
+            //No connection
+            statusCode = -2;
+        }
+        return statusCode;
+    }
+
+
 
     /**
      * Check if authentication passes
      * @return Returns true if the user is authenticated
      */
-    public static boolean isAuthenticated(Context context) {
-        try {
-            //Read token
-            SharedPreferences pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
-            Editor editor = pref.edit();
-
-            String token = pref.getString(TOKEN, null);
-            if(token == null) {
-                return false;
-            }
-
-            String url = "http://192.168.1.101:5200/v1/authenticate?auth=" + token;
-
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-            con.setRequestMethod("GET");
-            con.setRequestProperty("User-Agent", USER_AGENT);
-
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
-
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-            loginResponse = response.toString();
-
-            JSONParser parser = new JSONParser();
-            Object jsonObj  = parser.parse(loginResponse);
-            JSONArray array = new JSONArray();
-            array.add(jsonObj);
-            System.out.println(array.get(0));
-        } catch(Exception e) {
-            loginResponse = "error " + e.toString();
-            return false;
-        }
-        return false;
-    }
+//    public static boolean isAuthenticated(Context context) {
+//        try {
+//            //Read token
+//            SharedPreferences pref = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+//            Editor editor = pref.edit();
+//
+//            String token = pref.getString(TOKEN, null);
+//            if(token == null) {
+//                return false;
+//            }
+//
+//            String url = "http://192.168.1.101:5200/v1/authenticate?auth=" + token;
+//
+//            URL obj = new URL(url);
+//            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+//
+//            con.setRequestMethod("GET");
+//            con.setRequestProperty("User-Agent", USER_AGENT);
+//
+//            BufferedReader in = new BufferedReader(
+//                    new InputStreamReader(con.getInputStream()));
+//
+//            String inputLine;
+//            StringBuffer response = new StringBuffer();
+//
+//            while ((inputLine = in.readLine()) != null) {
+//                response.append(inputLine);
+//            }
+//            in.close();
+//            loginResponse = response.toString();
+//
+//            JSONParser parser = new JSONParser();
+//            Object jsonObj  = parser.parse(loginResponse);
+//            JSONArray array = new JSONArray();
+//            array.add(jsonObj);
+//            System.out.println(array.get(0));
+//        } catch(Exception e) {
+//            loginResponse = "error " + e.toString();
+//            return false;
+//        }
+//        return false;
+//    }
 
     public static boolean isConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -57,7 +57,7 @@ public class LoginActivity extends Activity {
             {
                username = userText.getText().toString();
                password = passwordText.getText().toString();
-               login(username, password);
+               login();
             }
         });
         registerButton = (Button) findViewById(R.id.buttonRegister);
@@ -69,7 +69,7 @@ public class LoginActivity extends Activity {
         });
     }
 
-    private void login (final String username, final String password) {
+    private void login() {
         Login login = new Login(this);
         login.execute();
     }
