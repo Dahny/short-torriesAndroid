@@ -14,18 +14,21 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:hint="Password" />
+        android:hint="Password"
+        android:maxLength="45" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/editUser"
+        android:inputType="textEmailAddress"
         android:layout_weight="0.65"
         android:layout_alignBottom="@+id/editPassword"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="76dp"
-        android:hint="Username" />
+        android:hint="Username"
+        android:maxLength="45" />
 
     <Button
         android:layout_width="wrap_content"

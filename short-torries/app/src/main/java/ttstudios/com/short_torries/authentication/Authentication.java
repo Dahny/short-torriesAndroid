@@ -1,4 +1,4 @@
-package ttstudios.com.short_torries;
+package ttstudios.com.short_torries.authentication;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

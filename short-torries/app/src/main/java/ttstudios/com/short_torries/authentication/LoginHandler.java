@@ -1,4 +1,4 @@
-package ttstudios.com.short_torries;
+package ttstudios.com.short_torries.authentication;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -15,6 +15,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import ttstudios.com.short_torries.menu.MenuActivity;
 
 /**
  * Created by Gerard on 5-2-2015.

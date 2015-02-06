@@ -1,4 +1,4 @@
-package ttstudios.com.short_torries;
+package ttstudios.com.short_torries.authentication;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import ttstudios.com.short_torries.R;
 
 
 public class LoginActivity extends Activity {

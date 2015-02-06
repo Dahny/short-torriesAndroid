@@ -1,4 +1,4 @@
-package ttstudios.com.short_torries;
+package ttstudios.com.short_torries.authentication;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
