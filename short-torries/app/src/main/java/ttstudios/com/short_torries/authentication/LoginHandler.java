@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import ttstudios.com.short_torries.R;
 import ttstudios.com.short_torries.menu.MenuActivity;
 
 /**
@@ -88,7 +89,7 @@ public class LoginHandler extends Authentication{
     public long login(Context context) {
         if (isConnected(context)) {
             try {
-                String url = "http://192.168.1.101:5200/v1/login?user=" + username + "&pass=" + password;
+                String url = context.getString(R.string.url)  + "/v1/login?user=" + username + "&pass=" + password;
 
                 URL obj = new URL(url);
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();

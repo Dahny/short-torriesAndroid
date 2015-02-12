@@ -16,6 +16,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import ttstudios.com.short_torries.R;
+
 /**
  * Created by Gerard on 5-2-2015.
  */
@@ -89,7 +91,7 @@ public class LogoutHandler extends Authentication {
                 if(token == null) {
                     return 0;
                 }
-                String url = "http://192.168.1.101:5200/v1/logout";
+                String url = context.getString(R.string.url)  + "/v1/logout";
 
                 URL obj = new URL(url);
                 HttpURLConnection con = (HttpURLConnection) obj.openConnection();
